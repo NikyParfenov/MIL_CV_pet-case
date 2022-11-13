@@ -6,8 +6,7 @@
  
 **РЕШЕНИЕ:**  
 1. MIL_test_case.ipynb - Manual NN for autoencoder and classification model (Hid-dim: 32, Acc: ~28%).
-2. MIL_test_case_VGG11.ipynb - VGG11-based autoencoder and classification model (Hid_dim: 8, Acc: ~44%).
-3. MIL_test_case_VGG16.ipynb - VGG16-based autoencoder and classification model (Hid_dim: 8, Acc: ~41%).
+2. MIL_test_case_VGG11.ipynb - VGG11-based autoencoder and classification model (Hid_dim: 16, Acc: ~46%).
 
-The increse of feature-model size from VGG11 to VGG16 doesn't improve the model quiality. So, to increase the classification quiality hidden-dimension and classification block should be researched more carefully.
+В исследовании были использованы нейросеть, написанная в ручную, а также VGG. Ручная сетка была достаточно простой и не смогла корректно построить автоэнкодер и классификационную модель. VGG показала лучшие результаты и дальнейшую работу по улучшению следуют вести либо с сеткой на базе VGG - увеличение скрытого пространства, либо использовать другую, более глобальную архитектуру. Причем, были также проведены тесты на VGG16, изменений по сравнению с VGG11 не было, поэтому если усложнять сеть, то более значимо.
 
