@@ -2,4 +2,6 @@ data/
 MIL_venv/
 .ipynb_checkpoints/
 __pycache__/
+History/
+Models/
 

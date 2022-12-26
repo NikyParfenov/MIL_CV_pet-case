@@ -25,21 +25,17 @@ class Encoder(nn.Module):
         x = self.conv_2nd(x)
         x = self.batch_norm_1(x)
         x = self.relu(x)
-
         x = self.conv_3rd(x)      
         x = self.conv_4th(x)
         x = self.batch_norm_2(x)
         x = self.relu(x)
-
         x = self.conv_5th(x)
         x = self.conv_6th(x)
         x = self.batch_norm_3(x)
         x = self.relu(x)
-        
         x = self.flat(x)
         x = self.relu(x)
         x = self.hidden(x)
-        
         return x
 
 class Decoder(nn.Module):
@@ -61,54 +57,46 @@ class Decoder(nn.Module):
         x = self.hidden(x)
         x = self.relu(x)
         x = self.unflat(x)
-        
         x = self.convt_1st(x)
         x = self.convt_2nd(x)
         x = self.batch_norm_1(x)
         x = self.relu(x)
-
         x = self.convt_3rd(x)
         x = self.convt_4th(x)
         x = self.batch_norm_2(x)
         x = self.relu(x)
-        
         x = self.convt_5th(x)
         x = self.convt_6th(x)
         x = self.relu(x)
-        
         return x
 
-class AutoEncoder(nn.Module):
-    def __init__(self, hidden_dim):
-        super(AutoEncoder, self).__init__()
-        self.enc = Encoder(hidden_dim)
-        self.dec = Decoder(hidden_dim)
+class ClassifModel(nn.Module):
+    def __init__(self, input_dim):
+        super(ClassifModel, self).__init__()
+        self.fc_1st = nn.Linear(input_dim, 1024)
+        self.fc_2nd = nn.Linear(1024, 1024)
+        self.fc_3rd = nn.Linear(1024, 10)
+        self.tanh = nn.Tanh()
+        self.dropout = nn.Dropout(0.5)
+
+    def forward(self, x):
+        x = self.fc_1st(x)
+        x = self.tanh(x)
+        x = self.dropout(x)
+        x = self.fc_2nd(x)
+        x = self.tanh(x)
+        x = self.dropout(x)
+        x = self.fc_3rd(x)
+        return x
+
+class FinalModel(nn.Module):
+    def __init__(self, encoder, decoder):
+        super(FinalModel, self).__init__()
+        self.enc = encoder
+        self.dec = decoder
         
     def forward(self, x):
         x = self.enc(x)
         x = self.dec(x)
-        
         return x
-
-
-class ClassificationModel(nn.Module):
-    def __init__(self, input_dim, pretrained_encoder):
-        super(ClassificationModel, self).__init__()
-        self.enc = pretrained_encoder
-
-        self.fc_1st = nn.Linear(input_dim, 1024)
-        self.fc_2nd = nn.Linear(1024, 1024)
-        self.fc_3rd = nn.Linear(1024, 10)
-
-    def forward(self, x):
-        x = self.enc(x)
-
-        x = self.fc_1st(x)
-        x = F.relu(x)
         
-        x = self.fc_2nd(x)
-        x = F.relu(x)
-        
-        x = self.fc_3rd(x)
-        
-        return x
